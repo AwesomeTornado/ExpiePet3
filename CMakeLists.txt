@@ -10,13 +10,20 @@ set(CMAKE_AUTOUIC ON)
 find_package(Qt6 COMPONENTS
         Core
         Gui
+        DBus
         Widgets
         REQUIRED)
 
-add_executable(ExpiePet3 main.cpp)
+add_executable(ExpiePet3 main.cpp
+        mainsprite.cpp
+        mainsprite.h
+        mainsprite.ui
+        IPC.cpp
+        IPC.h)
 target_link_libraries(ExpiePet3
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt6::DBus
 )
 
