@@ -26,6 +26,8 @@ class mainsprite : public QWidget {
 public:
     explicit mainsprite(QWidget *parent = nullptr);
 
+    void incrementAnimation();
+
     ~mainsprite() override;
 
 private:
@@ -36,6 +38,7 @@ private:
     QPointF velocity = QPointF(0,0);
     QPointF location = QPointF(0,0);
     QPointF dragOffset = QPointF(0,0);
+    int animStep = 0;
     bool dragging = false;
 
     const float deltaTime = 10.f;
@@ -47,7 +50,7 @@ protected:
 
     void handleMouseEvent(QMouseEvent *event);
 
-    void windowPhysics(QPoint center);
+    bool windowPhysics(QPoint center);
 
     void mulVelX(float mult);
 
