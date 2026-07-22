@@ -43,19 +43,6 @@ void mainsprite::incrementAnimation() {
 void mainsprite::paintEvent(QPaintEvent *) {
 
     //QPixmap pm("/home/harleyp/CLionProjects/ExpiePet3/VeryHappy.webp");
-    // QPixmap pm;
-    // if (dragging) {
-    //     pm = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/stick_drag.png");
-    // }
-    // else if (velocity.y() > .5) {
-    //     pm = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/stick_fall.png");
-    // }
-    // else if (abs(velocity.x()) < .5) {
-    //     pm = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/stick_idle.png");
-    // }else {
-    //     pm = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/stick_walk.png");
-    // }
-    // pm = pm.copy(QRect(animStep * 100, 0, 100,100));
     QPoint screenCenter = QPoint(window()->size().width()/2, window()->size().height()/2);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -75,7 +62,8 @@ void mainsprite::paintEvent(QPaintEvent *) {
         if (pos().x() > screen()->size().width() - window()->size().width() && velocity.x() > 0) {
             mulVelX(-.7f);
         }
-        bool canFall = windowPhysics(mapToGlobal(screenCenter + QPoint(0, 50)));
+        float windowHeight = this->window()->size().height();
+        bool canFall = windowPhysics(mapToGlobal(screenCenter + QPoint(0, windowHeight)));
         if (canFall) {
             addVelY(.25);
         }
@@ -108,11 +96,21 @@ void mainsprite::paintEvent(QPaintEvent *) {
     drawSprite(&painter);
 }
 
+QRectF offsetRect(QRectF* rect, QPointF* offset) {
+    return rect->adjusted(-offset->x(), -offset->y(), -offset->x(),-offset->y());
+};
+
 void mainsprite::drawSprite(QPainter* painter) {
-    painter->drawImage(sprHead.adjusted(-spoHead.x(), -spoHead.y(), -spoHead.x(),-spoHead.y()), spxHead.toImage());
-    painter->drawImage(sprDownTorso.adjusted(-spoDownTorso.x(), -spoDownTorso.y(), -spoDownTorso.x(),-spoDownTorso.y()), spxDownTorso.toImage());
-    painter->drawImage(sprUpTorso.adjusted(-spoUpTorso.x(), -spoUpTorso.y(), -spoUpTorso.x(),-spoUpTorso.y()), spxUpTorso.toImage());
-    painter->drawImage(sprTail.adjusted(-spoTail.x(), -spoTail.y(), -spoTail.x(),-spoTail.y()), spxTail.toImage());
+
+    
+    //spgDownTorso.setRotation(20 * QTime::currentTime().msec()/1000);
+    painter->drawImage(offsetRect(&sprDownTorso, &spoDownTorso), spxDownTorso.toImage());
+    painter->drawImage(offsetRect(&sprUpTorso, &spoUpTorso), spxUpTorso.toImage());
+    painter->drawImage(offsetRect(&sprTail, &spoTail), spxTail.toImage());
+    painter->drawImage(offsetRect(&sprThigh, &spoThigh), spxThigh.toImage());
+    painter->drawImage(offsetRect(&sprFoot, &spoFoot), spxFoot.toImage());
+    painter->drawImage(offsetRect(&sprHead, &spoHead), spxHead.toImage());
+
 
 
 }
@@ -136,13 +134,14 @@ void mainsprite::handleMouseEvent( QMouseEvent *event) {
 }
 
 bool mainsprite::windowPhysics(const QPoint center) {
+    float windowHeight = this->window()->size().height();
     for (int i = ipc->heightmap.size() - 1; i >= 0; i--) {
         if (ipc->heightmap[i] != NULL) {
             int index = ipc->heightmap[i];
             advancedWindow focusedWindow = ipc->windows.at(index);
             if (!focusedWindow.boundingRect.isNull()) {
                 if (focusedWindow.boundingRect.contains(center)) {
-                    if (abs(focusedWindow.boundingRect.top() - center.y()) < 50 && velocity.y() > 0) {
+                    if (abs(focusedWindow.boundingRect.top() - center.y()) < windowHeight && velocity.y() > 0) {
                         velocity.setX(focusedWindow.velocity.x() * .8 + velocity.x() * .2);
                         mulVelX(.5);
                         //if (velocity.y() > 0)
@@ -150,7 +149,7 @@ bool mainsprite::windowPhysics(const QPoint center) {
                         //addVelY(std::min(focusedWindow.velocity.y(), 0.0));
                         //addVelY(std::min(focusedWindow.boundingRect.top() - center.y(),0.0));
                         //mulVelY(.5);
-                        setPosY(focusedWindow.boundingRect.top() - 100);
+                        setPosY(focusedWindow.boundingRect.top() - windowHeight);
                         //mulVelY(0);
                         return false;
                     }

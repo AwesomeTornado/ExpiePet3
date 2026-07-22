@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QGraphicsPixmapItem>
 #include "IPC.h"
 
 QT_BEGIN_NAMESPACE
@@ -45,21 +46,41 @@ private:
 
     const float spriteSize = 5.f;
 
+    static QRectF spriteBoundingRect(QPixmap* pixmap, float size) {
+        return QRectF(size * pixmap->size().width() / -2,size * pixmap->size().height() / -2, size * pixmap->size().width(), size * pixmap->size().height());
+    };
+
+//todo: make a struct for these and put them in an array for auto drawing.
+
     QPixmap spxHead = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Head/experimentHead.png");
-    QRectF sprHead = QRectF(spriteSize * spxHead.size().width() / -2,spriteSize * spxHead.size().height() / -2, spriteSize * spxHead.size().width(), spriteSize * spxHead.size().height());
+    QGraphicsPixmapItem spgHead = QGraphicsPixmapItem(spxHead);
+    QRectF sprHead = spriteBoundingRect(&spxHead,spriteSize);
     QPointF spoHead = QPointF(0,20 * spriteSize);
 
     QPixmap spxUpTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentUpTorso.png");
-    QRectF sprUpTorso = QRectF(spriteSize * spxUpTorso.size().width() / -2,spriteSize * spxUpTorso.size().height() / -2, spriteSize * spxUpTorso.size().width(), spriteSize * spxUpTorso.size().height());
-    QPointF spoUpTorso = QPointF(0,12 * spriteSize);
+    QGraphicsPixmapItem spgUpTorso = QGraphicsPixmapItem(spxUpTorso);
+    QRectF sprUpTorso = spriteBoundingRect(&spxUpTorso,spriteSize);
+    QPointF spoUpTorso = QPointF(0,11 * spriteSize);
 
     QPixmap spxDownTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentDownTorso.png");
-    QRectF sprDownTorso = QRectF(spriteSize * spxDownTorso.size().width() / -2,spriteSize * spxDownTorso.size().height() / -2, spriteSize * spxDownTorso.size().width(), spriteSize * spxDownTorso.size().height());
-    QPointF spoDownTorso = QPointF(0,4 * spriteSize);
+    QGraphicsPixmapItem spgDownTorso = QGraphicsPixmapItem(spxDownTorso);
+    QRectF sprDownTorso = spriteBoundingRect(&spxDownTorso,spriteSize);
+    QPointF spoDownTorso = QPointF(0,2 * spriteSize);
 
     QPixmap spxTail = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentTail.png");
-    QRectF sprTail = QRectF(spriteSize * spxTail.size().width() / -2,spriteSize * spxTail.size().height() / -2, spriteSize * spxTail.size().width(), spriteSize * spxTail.size().height());
-    QPointF spoTail = QPointF(0,0 * spriteSize);
+    QGraphicsPixmapItem spgTail = QGraphicsPixmapItem(spxTail);
+    QRectF sprTail = spriteBoundingRect(&spxTail,spriteSize);
+    QPointF spoTail = QPointF(0,-2 * spriteSize);
+
+    QPixmap spxThigh = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentThigh.png");
+    QGraphicsPixmapItem spgThigh = QGraphicsPixmapItem(spxThigh);
+    QRectF sprThigh = spriteBoundingRect(&spxThigh,spriteSize);
+    QPointF spoThigh = QPointF(0,-8 * spriteSize);
+
+    QPixmap spxFoot = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentFoot.png");
+    QGraphicsPixmapItem spgFoot = QGraphicsPixmapItem(spxFoot);
+    QRectF sprFoot = spriteBoundingRect(&spxFoot,spriteSize);
+    QPointF spoFoot = QPointF(0,-16 * spriteSize);
     //QPointF  = QPointF(0,0);
 
 protected:

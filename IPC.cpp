@@ -4,7 +4,7 @@
 
 #include "IPC.h"
 
-
+//todo: add window minimization logic. (Implement in KWINSCRIPT first)
 IPC::IPC() {
     auto connection = QDBusConnection::sessionBus();
 
