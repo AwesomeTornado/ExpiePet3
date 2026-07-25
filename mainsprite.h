@@ -32,8 +32,6 @@ class mainsprite : public QWidget {
 public:
     explicit mainsprite(QWidget *parent = nullptr);
 
-    void incrementAnimation();
-
     ~mainsprite() override;
 
 private:
@@ -62,7 +60,7 @@ private:
     QPixmap spxHead = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Head/experimentHead.png");
     QPointF spoHead = QPointF(120,90);
     QPointF sptHead = QPointF(10,12);
-    spriteNode snHead = spriteNode(&scene, spxHead, spoHead, sptHead, 0, 360, spriteSize);
+    spriteNode snHead = spriteNode(&scene, spxHead, spoHead, sptHead, -90, 90, spriteSize);
 
     QPixmap spxUpTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentUpTorso.png");
     QGraphicsPixmapItem spgUpTorso = QGraphicsPixmapItem(spxUpTorso);
@@ -100,9 +98,10 @@ private:
 
 
 protected:
-    void paintEvent(QPaintEvent*) override;
 
-    void drawSprite(QPainter *painter);
+    void updateSprite();
+
+    void drawSprite();
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;

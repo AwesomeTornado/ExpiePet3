@@ -42,7 +42,7 @@ void twoBoneKinematic::update() {
     QPointF centerpoint = QPointF(x_centerline, y_centerline);
     qreal a_top = magnitude(centerpoint);
     qreal a_angle_top = acosf(a_top/radiusParent);
-    qreal c_angle = (M_1_PIf/2.) - a_angle_top;
+    qreal c_angle = M_PI_2 - a_angle_top;
     qreal a_bottom = magnitude(local_goal) - a_top;
     qreal a_angle_bottom = asinf(a_bottom / radiusChild);
     qreal a_angle = a_angle_top + a_angle_bottom;
@@ -63,6 +63,6 @@ void twoBoneKinematic::update() {
     if (qIsNull(child_angle))
         return;
 
-    parent->rotate(parent_angle*(180./M_1_PIf) + parentRotationOffset);
-    child->rotate(child_angle*(180./M_1_PIf) + childRotationOffset);
+    parent->rotate(parent_angle*(180./M_PI) + parentRotationOffset);
+    child->rotate(child_angle*(180./M_PI) + childRotationOffset);
 }

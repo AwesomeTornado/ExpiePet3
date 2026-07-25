@@ -18,17 +18,13 @@ mainsprite::mainsprite(QWidget *parent) : QWidget(parent), ui(new Ui::mainsprite
 
     setWindowFlags(Qt::Window  | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
     setParent(nullptr); // Create TopLevel-Widget
-    //setAttribute(Qt::WA_TranslucentBackground, true);
+    setAttribute(Qt::WA_TranslucentBackground, true);
     setAttribute(Qt::WA_AlwaysStackOnTop, true);
     location = pos();
 
     auto paintTimer = new QTimer(); //The memory leak is intentional.
-    connect(paintTimer, &QTimer::timeout, this, QOverload<>::of(&mainsprite::update));
+    connect(paintTimer, &QTimer::timeout, this, QOverload<>::of(&mainsprite::updateSprite));
     paintTimer->start(static_cast<int>(deltaTime));
-
-    auto animTimer = new QTimer(); //The memory leak is intentional.
-    connect(animTimer, &QTimer::timeout, this, &mainsprite::incrementAnimation);
-    animTimer->start(static_cast<int>(250));
 
     scene.addItem(&spgDownTorso);
     scene.addItem(&spgUpTorso);
@@ -39,26 +35,13 @@ mainsprite::mainsprite(QWidget *parent) : QWidget(parent), ui(new Ui::mainsprite
     spgDownTorso.moveBy(spoDownTorso.x(), spoDownTorso.y());
     spgUpTorso.moveBy(spoUpTorso.x(), spoUpTorso.y());
     spgTail.moveBy(spoTail.x(), spoTail.y());
+
     this->ui->FancyCanvas->setScene(&scene);
     this->ui->FancyCanvas->show();
 }
 
-void mainsprite::incrementAnimation() {
-    if (animStep >= 3) {
-        animStep = 0;
-    }else {
-        animStep++;
-    }
-
-}
-
-void mainsprite::paintEvent(QPaintEvent *) {
-
-    //QPixmap pm("/home/harleyp/CLionProjects/ExpiePet3/VeryHappy.webp");
+void mainsprite::updateSprite() {
     QPoint screenCenter = QPoint(window()->size().width()/2, window()->size().height()/2);
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.translate(screenCenter);
     if (dragging) {
         QPointF newLocation = (ipc->mousePos * .9) - dragOffset;
         velocity = ipc->mouseVel;
@@ -92,34 +75,21 @@ void mainsprite::paintEvent(QPaintEvent *) {
     location += velocity;//this section could be cleaned up to get rid of prevLocation probably.
     move(location.toPoint());
     velocity = pos() - prevLocation;
-    painter.setPen(Qt::NoPen);
-    float mult = 0;
-    if (velocity.x() < -.5) {
-        QTransform transf = painter.transform();
-        transf.scale(-1, 1);
-        painter.setTransform(transf);
-        mult = -1;
-    }
-
-    if (velocity.x() > .5)
-        mult = 1;
-    //painter.rotate( mult * 360 * QTime::currentTime().msec()/1000);
-    //painter.drawImage(QRectF(  QPoint(-50,-50), QPoint(50,50)), pm.toImage());
-    drawSprite(&painter);
+    drawSprite();
 }
 
 QRectF offsetRect(QRectF* rect, QPointF* offset) {
     return rect->adjusted(-offset->x(), -offset->y(), -offset->x(),-offset->y());
 };
 
-void mainsprite::drawSprite(QPainter* painter) {
+void mainsprite::drawSprite() {
 
     
 
-    snHead.rotate(50 * QTime::currentTime().msec()/1000);
+    snHead.rotate(5 * sin((QTime::currentTime().msec() * M_PI * 2)/1000));
     //snFoot.rotate((50 * QTime::currentTime().msec()/1000) * 2);
     //snThigh.rotate((50 * QTime::currentTime().msec()/1000) * -1);
-    QPointF target = start - QPointF(-2, (7. * QTime::currentTime().msec()/1000) + 2);
+    QPointF target = start - QPointF(-2, 18 * sin((QTime::currentTime().msec() * M_PI * 2)/1000) + 28);
     rightLeg.setGoal(target);
     rightLeg.setOrigin(start);
     rightLeg.update();
