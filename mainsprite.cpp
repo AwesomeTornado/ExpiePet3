@@ -29,6 +29,18 @@ mainsprite::mainsprite(QWidget *parent) : QWidget(parent), ui(new Ui::mainsprite
     auto animTimer = new QTimer(); //The memory leak is intentional.
     connect(animTimer, &QTimer::timeout, this, &mainsprite::incrementAnimation);
     animTimer->start(static_cast<int>(250));
+
+    scene.addItem(&spgDownTorso);
+    scene.addItem(&spgUpTorso);
+    scene.addItem(&spgTail);
+    spgDownTorso.setScale(spriteSize);
+    spgUpTorso.setScale(spriteSize);
+    spgTail.setScale(spriteSize);
+    spgDownTorso.moveBy(spoDownTorso.x(), spoDownTorso.y());
+    spgUpTorso.moveBy(spoUpTorso.x(), spoUpTorso.y());
+    spgTail.moveBy(spoTail.x(), spoTail.y());
+    this->ui->FancyCanvas->setScene(&scene);
+    this->ui->FancyCanvas->show();
 }
 
 void mainsprite::incrementAnimation() {
@@ -103,14 +115,14 @@ QRectF offsetRect(QRectF* rect, QPointF* offset) {
 void mainsprite::drawSprite(QPainter* painter) {
 
     
-    //spgDownTorso.setRotation(20 * QTime::currentTime().msec()/1000);
-    painter->drawImage(offsetRect(&sprDownTorso, &spoDownTorso), spxDownTorso.toImage());
-    painter->drawImage(offsetRect(&sprUpTorso, &spoUpTorso), spxUpTorso.toImage());
-    painter->drawImage(offsetRect(&sprTail, &spoTail), spxTail.toImage());
-    painter->drawImage(offsetRect(&sprThigh, &spoThigh), spxThigh.toImage());
-    painter->drawImage(offsetRect(&sprFoot, &spoFoot), spxFoot.toImage());
-    painter->drawImage(offsetRect(&sprHead, &spoHead), spxHead.toImage());
 
+    snHead.rotate(50 * QTime::currentTime().msec()/1000);
+    //snFoot.rotate((50 * QTime::currentTime().msec()/1000) * 2);
+    //snThigh.rotate((50 * QTime::currentTime().msec()/1000) * -1);
+    QPointF target = start - QPointF(-2, (7. * QTime::currentTime().msec()/1000) + 2);
+    rightLeg.setGoal(target);
+    rightLeg.setOrigin(start);
+    rightLeg.update();
 
 
 }

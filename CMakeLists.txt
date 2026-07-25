@@ -19,7 +19,13 @@ add_executable(ExpiePet3 main.cpp
         mainsprite.h
         mainsprite.ui
         IPC.cpp
-        IPC.h)
+        IPC.h
+        spriteNode.cpp
+        spriteNode.h
+        twoBoneKinematic.cpp
+        twoBoneKinematic.h
+        vMath.cpp
+        vMath.h)
 target_link_libraries(ExpiePet3
         Qt::Core
         Qt::Gui

@@ -11,13 +11,18 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include "spriteNode.h"
 #include "IPC.h"
+#include "twoBoneKinematic.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
     class mainsprite;
 }
+
 
 QT_END_NAMESPACE
 
@@ -34,6 +39,8 @@ public:
 private:
     Ui::mainsprite *ui;
     const IPC *ipc;
+
+    QGraphicsScene scene;
 
     QPointF prevLocation = QPointF(0,0);
     QPointF velocity = QPointF(0,0);
@@ -53,35 +60,44 @@ private:
 //todo: make a struct for these and put them in an array for auto drawing.
 
     QPixmap spxHead = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Head/experimentHead.png");
-    QGraphicsPixmapItem spgHead = QGraphicsPixmapItem(spxHead);
-    QRectF sprHead = spriteBoundingRect(&spxHead,spriteSize);
-    QPointF spoHead = QPointF(0,20 * spriteSize);
+    QPointF spoHead = QPointF(120,90);
+    QPointF sptHead = QPointF(10,12);
+    spriteNode snHead = spriteNode(&scene, spxHead, spoHead, sptHead, 0, 360, spriteSize);
 
     QPixmap spxUpTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentUpTorso.png");
     QGraphicsPixmapItem spgUpTorso = QGraphicsPixmapItem(spxUpTorso);
     QRectF sprUpTorso = spriteBoundingRect(&spxUpTorso,spriteSize);
-    QPointF spoUpTorso = QPointF(0,11 * spriteSize);
+    QPointF spoUpTorso = QPointF(100,21 * spriteSize);
+
+
 
     QPixmap spxDownTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentDownTorso.png");
     QGraphicsPixmapItem spgDownTorso = QGraphicsPixmapItem(spxDownTorso);
     QRectF sprDownTorso = spriteBoundingRect(&spxDownTorso,spriteSize);
-    QPointF spoDownTorso = QPointF(0,2 * spriteSize);
+    QPointF spoDownTorso = QPointF(110,28 * spriteSize);
 
     QPixmap spxTail = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentTail.png");
     QGraphicsPixmapItem spgTail = QGraphicsPixmapItem(spxTail);
     QRectF sprTail = spriteBoundingRect(&spxTail,spriteSize);
-    QPointF spoTail = QPointF(0,-2 * spriteSize);
+    QPointF spoTail = QPointF(0,32 * spriteSize);
 
     QPixmap spxThigh = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentThigh.png");
-    QGraphicsPixmapItem spgThigh = QGraphicsPixmapItem(spxThigh);
-    QRectF sprThigh = spriteBoundingRect(&spxThigh,spriteSize);
-    QPointF spoThigh = QPointF(0,-8 * spriteSize);
+    QPointF spoThigh = QPointF(110,195);
+    QPointF sptThigh = QPointF(0,1);
+    spriteNode snThigh = spriteNode(&scene, spxThigh, spoThigh, sptThigh, -360, 360, spriteSize);
 
     QPixmap spxFoot = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentFoot.png");
-    QGraphicsPixmapItem spgFoot = QGraphicsPixmapItem(spxFoot);
-    QRectF sprFoot = spriteBoundingRect(&spxFoot,spriteSize);
-    QPointF spoFoot = QPointF(0,-16 * spriteSize);
-    //QPointF  = QPointF(0,0);
+    //QPointF sptFoot = QPointF(3,1);
+    QPointF sptFoot = QPointF(3,1);
+    qreal sproFoot = 75;
+    qreal spdFoot = 60;
+    spriteNode snFoot = spriteNode(&scene, spxFoot, sproFoot, spdFoot, sptFoot, -180, 180, spriteSize, &snThigh);
+
+    twoBoneKinematic rightLeg = twoBoneKinematic(&snThigh, spdFoot, -50, &snFoot, 50, 0);
+
+    QPointF start =  spoThigh + QPointF(20,50);
+
+
 
 protected:
     void paintEvent(QPaintEvent*) override;
