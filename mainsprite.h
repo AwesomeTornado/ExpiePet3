@@ -108,6 +108,8 @@ protected:
 
     void handleMouseEvent(QMouseEvent *event);
 
+
+
     bool windowPhysics(QPoint center);
 
     void mulVelX(float mult);
@@ -121,6 +123,9 @@ protected:
     void setPosY(float pos);
 
     void setPosX(float pos);
+
+    void addPosY(float pos);
+    void addPosX(float pos);
 };
 
 

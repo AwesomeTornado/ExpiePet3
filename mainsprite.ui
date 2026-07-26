@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
-    <height>324</height>
+    <width>256</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QGraphicsView" name="FancyCanvas">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>10</y>
-     <width>291</width>
-     <height>301</height>
+     <width>251</width>
+     <height>271</height>
     </rect>
    </property>
    <property name="toolTipDuration">

@@ -57,12 +57,13 @@ void mainsprite::updateSprite() {
         if (pos().x() > screen()->size().width() - window()->size().width() && velocity.x() > 0) {
             mulVelX(-.7f);
         }
-        float windowHeight = this->window()->size().height();
+        float windowHeight = this->window()->size().height() / 2;
+        //float windowHeight = 0;
         bool canFall = windowPhysics(mapToGlobal(screenCenter + QPoint(0, windowHeight)));
         if (canFall) {
             addVelY(.25);
         }
-        if (pos().y() > 700) {
+        if (pos().y() > this->screen()->size().height() - 350) {
             mulVelX(.5);
             velocity.setY(0);
         }
@@ -74,7 +75,18 @@ void mainsprite::updateSprite() {
     prevLocation = location;
     location += velocity;//this section could be cleaned up to get rid of prevLocation probably.
     move(location.toPoint());
-    velocity = pos() - prevLocation;
+    velocity = location - prevLocation;
+    static int currentScale = 1;
+    if (abs(velocity.x()) > 4) {
+        if (velocity.x() > 0) {
+            this->ui->FancyCanvas->scale((-1 == currentScale) ? -1 : 1,1);
+            currentScale = 1;
+        }else {
+            this->ui->FancyCanvas->scale((1 == currentScale) ? -1 : 1, 1);
+            currentScale = -1;
+        }
+    }
+
     drawSprite();
 }
 
@@ -93,7 +105,6 @@ void mainsprite::drawSprite() {
     rightLeg.setGoal(target);
     rightLeg.setOrigin(start);
     rightLeg.update();
-
 
 }
 
@@ -123,15 +134,17 @@ bool mainsprite::windowPhysics(const QPoint center) {
             advancedWindow focusedWindow = ipc->windows.at(index);
             if (!focusedWindow.boundingRect.isNull()) {
                 if (focusedWindow.boundingRect.contains(center)) {
-                    if (abs(focusedWindow.boundingRect.top() - center.y()) < windowHeight && velocity.y() > 0) {
-                        velocity.setX(focusedWindow.velocity.x() * .8 + velocity.x() * .2);
-                        mulVelX(.5);
+                    qreal distToTop = focusedWindow.boundingRect.top() - center.y();
+                    if ((distToTop > (- 15 - abs(focusedWindow.velocity.y())))  && velocity.y() - focusedWindow.velocity.y() >= 0) {
+                        velocity.setX(focusedWindow.velocity.x() * .90 + velocity.x() * .1);
+                        //mulVelX(.5);
                         //if (velocity.y() > 0)
                         //    mulVelY(-.5);
-                        //addVelY(std::min(focusedWindow.velocity.y(), 0.0));
+                        mulVelY(0);
+                        addVelY(std::min(focusedWindow.velocity.y(), 0.0));
                         //addVelY(std::min(focusedWindow.boundingRect.top() - center.y(),0.0));
                         //mulVelY(.5);
-                        setPosY(focusedWindow.boundingRect.top() - windowHeight);
+                        addPosY(std::min(distToTop,0.));
                         //mulVelY(0);
                         return false;
                     }
@@ -162,6 +175,14 @@ void mainsprite::setPosY(const float pos) {
 void mainsprite::setPosX(const float pos) {
     location.setX(pos);
     prevLocation.setX(pos);
+}
+
+void mainsprite::addPosY(float pos) {
+    location.setY(location.y() + pos);
+}
+
+void mainsprite::addPosX(float pos) {
+    location.setX(location.x() + pos);
 }
 
 mainsprite::~mainsprite() {
