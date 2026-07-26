@@ -6,13 +6,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-
+#find_package(KF6 REQUIRED COMPONENTS Config)
+#target_link_libraries(mytarget PRIVATE KF6::ConfigCore)
 find_package(Qt6 COMPONENTS
         Core
         Gui
         DBus
         Widgets
         REQUIRED)
+find_package(KF6Config)
+#find_package(KF6 REQUIRED COMPONENTS Config)
 
 add_executable(ExpiePet3 main.cpp
         mainsprite.cpp
@@ -31,5 +34,6 @@ target_link_libraries(ExpiePet3
         Qt::Gui
         Qt::Widgets
         Qt6::DBus
+        KF6::ConfigCore
 )
 

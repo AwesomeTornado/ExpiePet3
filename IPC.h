@@ -7,6 +7,8 @@
 
 #include <QWidget>
 #include <QDBusInterface>
+#include <KSharedConfig>
+#include <KConfigGroup>
 
 typedef struct {
     QRectF boundingRect;
@@ -21,12 +23,16 @@ public:
     std::vector<int> heightmap = std::vector<int>(0);
     QPointF mousePos = QPointF(0,0);
     QPointF mouseVel = QPointF(0,0);
+
+    QPointF getMousePos() const;
 private:
     std::vector<QPointF> oldPoints = std::vector<QPointF>(0);
 
     const char* DBUS_SERVICE = "com.Choco.ExpiePet3";
     const char* DBUS_INTERFACE = DBUS_SERVICE;
     const char* DBUS_PATH = "/IPC";
+
+    qreal scale = 1;
 
     Q_CLASSINFO("D-Bus Interface", "com.Choco.ExpiePet3")
 public slots:

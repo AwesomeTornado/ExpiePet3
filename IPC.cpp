@@ -18,7 +18,25 @@ IPC::IPC() {
         qWarning("%s\n", qPrintable(connection.lastError().message()));
         exit(1);
     }
+
+    //Get the desktop scaling factor to ensure proper scaling of mouse coordinates.
+    try {
+        auto config = KSharedConfig::openConfig("kwinrc");
+        KConfigGroup XWaylandConf = config->group("Xwayland");
+        QMap<QString,QString> configMap = XWaylandConf.entryMap();
+        QString stringScale = configMap.value("Scale");
+        this->scale = stringScale.toDouble();
+    }catch (std::exception e) {
+        std::printf("Could not find XWayland scaling factor, scale is likely set to default, ignoring.\n");
+    }
+
     connection.registerObject(DBUS_PATH, this, QDBusConnection::ExportAllSlots);
+}
+
+QPointF IPC::getMousePos() const {
+    if (mousePos == QPointF(0,0))
+       return QCursor::pos();
+    return mousePos;
 }
 
 void IPC::recomputeHeightmap(const int uuid) {
@@ -39,17 +57,17 @@ void IPC::recomputeHeightmap(const int uuid) {
 
 void IPC::updateCursor(const int x, const int y)
 {
-    const auto p = QPointF(x,y);
+    const QPointF p = QPointF(x,y) * scale;
     mouseVel += p - mousePos;
     mouseVel *= .5; //Rudimentary smoothing.
     mousePos = p;
 }
 
 void IPC::updateCompositor(const int uuid, double x, double y, double width, double height) {
-    x *= .9;
-    y *= .9;
-    width *= .9;
-    height *= .9;
+    x *= scale;
+    y *= scale;
+    width *= scale;
+    height *= scale;
     std::printf("%d, %.2f,%.2f    %.2f,%.2f \n",uuid, x,y,width,height);
     if (uuid >= windows.size()) {
         windows.resize(uuid + 1);

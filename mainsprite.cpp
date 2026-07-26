@@ -43,7 +43,7 @@ mainsprite::mainsprite(QWidget *parent) : QWidget(parent), ui(new Ui::mainsprite
 void mainsprite::updateSprite() {
     QPoint screenCenter = QPoint(window()->size().width()/2, window()->size().height()/2);
     if (dragging) {
-        QPointF newLocation = (ipc->mousePos * .9) - dragOffset;
+        QPointF newLocation = ipc->getMousePos() - dragOffset;
         velocity = ipc->mouseVel;
         move(newLocation.toPoint());
         location = pos(); //Can this be simplified to location = newlocation?

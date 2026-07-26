@@ -57,35 +57,36 @@ private:
 
 //todo: make a struct for these and put them in an array for auto drawing.
 
-    QPixmap spxHead = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Head/experimentHead.png");
+    QPixmap spxHead = QPixmap("../expie/Head/experimentHead.png");
     QPointF spoHead = QPointF(120,90);
     QPointF sptHead = QPointF(10,12);
     spriteNode snHead = spriteNode(&scene, spxHead, spoHead, sptHead, -90, 90, spriteSize);
 
-    QPixmap spxUpTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentUpTorso.png");
+    QPixmap spxUpTorso = QPixmap("../expie/Body/experimentUpTorso.png");
     QGraphicsPixmapItem spgUpTorso = QGraphicsPixmapItem(spxUpTorso);
     QRectF sprUpTorso = spriteBoundingRect(&spxUpTorso,spriteSize);
     QPointF spoUpTorso = QPointF(100,21 * spriteSize);
+    QPointF sptUpTorso = QPointF(10,12);
+    //spriteNode snUpTorso = spriteNode(&scene, spxUpTorso, sptUpTorso, sptHead, -90, 90, spriteSize);
 
 
 
-    QPixmap spxDownTorso = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentDownTorso.png");
+    QPixmap spxDownTorso = QPixmap("../expie/Body/experimentDownTorso.png");
     QGraphicsPixmapItem spgDownTorso = QGraphicsPixmapItem(spxDownTorso);
     QRectF sprDownTorso = spriteBoundingRect(&spxDownTorso,spriteSize);
     QPointF spoDownTorso = QPointF(110,28 * spriteSize);
 
-    QPixmap spxTail = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentTail.png");
+    QPixmap spxTail = QPixmap("../expie/Body/experimentTail.png");
     QGraphicsPixmapItem spgTail = QGraphicsPixmapItem(spxTail);
     QRectF sprTail = spriteBoundingRect(&spxTail,spriteSize);
     QPointF spoTail = QPointF(0,32 * spriteSize);
 
-    QPixmap spxThigh = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentThigh.png");
+    QPixmap spxThigh = QPixmap("../expie/Body/experimentThigh.png");
     QPointF spoThigh = QPointF(110,195);
     QPointF sptThigh = QPointF(0,1);
     spriteNode snThigh = spriteNode(&scene, spxThigh, spoThigh, sptThigh, -360, 360, spriteSize);
 
-    QPixmap spxFoot = QPixmap("/home/harleyp/CLionProjects/ExpiePet3/expie/Body/experimentFoot.png");
-    //QPointF sptFoot = QPointF(3,1);
+    QPixmap spxFoot = QPixmap("../expie/Body/experimentFoot.png");
     QPointF sptFoot = QPointF(3,1);
     qreal sproFoot = 75;
     qreal spdFoot = 60;
