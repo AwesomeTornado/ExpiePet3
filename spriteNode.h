@@ -27,8 +27,9 @@ private:
     qreal rotation_min;
     qreal rotation_max;
     qreal scale;
-    qreal local_rotation;
+
 protected:
+    qreal local_rotation;
     QPointF offset_transform_origin;
     qreal distance_from_parent;
     qreal rotation_offset;

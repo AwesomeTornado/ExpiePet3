@@ -26,16 +26,6 @@ mainsprite::mainsprite(QWidget *parent) : QWidget(parent), ui(new Ui::mainsprite
     connect(paintTimer, &QTimer::timeout, this, QOverload<>::of(&mainsprite::updateSprite));
     paintTimer->start(static_cast<int>(deltaTime));
 
-    scene.addItem(&spgDownTorso);
-    scene.addItem(&spgUpTorso);
-    scene.addItem(&spgTail);
-    spgDownTorso.setScale(spriteSize);
-    spgUpTorso.setScale(spriteSize);
-    spgTail.setScale(spriteSize);
-    spgDownTorso.moveBy(spoDownTorso.x(), spoDownTorso.y());
-    spgUpTorso.moveBy(spoUpTorso.x(), spoUpTorso.y());
-    spgTail.moveBy(spoTail.x(), spoTail.y());
-
     this->ui->FancyCanvas->setScene(&scene);
     this->ui->FancyCanvas->show();
 }
@@ -100,12 +90,14 @@ void mainsprite::drawSprite() {
 
     snHead.rotate(5 * sin((QTime::currentTime().msec() * M_PI * 2)/1000));
     //snFoot.rotate((50 * QTime::currentTime().msec()/1000) * 2);
-    //snThigh.rotate((50 * QTime::currentTime().msec()/1000) * -1);
-    QPointF target = start - QPointF(-2, 18 * sin((QTime::currentTime().msec() * M_PI * 2)/1000) + 28);
-    rightLeg.setGoal(target);
-    rightLeg.setOrigin(start);
-    rightLeg.update();
-
+    //snThigh.rotate((40 * QTime::currentTime().msec()/1000) * -1);
+    //snCrus.rotate((40 * QTime::currentTime().msec()/1000) * -1);
+    //snFoot.rotate((40 * QTime::currentTime().msec()/1000) * -1);
+    //QPointF target = start - QPointF(-2, 18 * sin((QTime::currentTime().msec() * M_PI * 2)/1000) + 28);
+    //rightLeg.setGoal(target);
+    //rightLeg.setOrigin(start);
+    //rightLeg.update();
+    legSolver.update();
 }
 
 void mainsprite::mousePressEvent(QMouseEvent *event) {

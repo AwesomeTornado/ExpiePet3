@@ -28,7 +28,9 @@ add_executable(ExpiePet3 main.cpp
         twoBoneKinematic.cpp
         twoBoneKinematic.h
         vMath.cpp
-        vMath.h)
+        vMath.h
+        legKinematics.cpp
+        legKinematics.h)
 target_link_libraries(ExpiePet3
         Qt::Core
         Qt::Gui
