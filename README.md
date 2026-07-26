@@ -8,7 +8,6 @@ but this will be updated as I work on it more, and I do review and accept pull r
 ### Requirements
 - KWin Wayland window manager
 ### Build instructions
-**I forgot to change the filepaths for the images, you will have to do this yourself until I fix it. They are located in mainsprite.h**
 - Install the KWinScript input handler from [here](https://github.com/AwesomeTornado/ExpiePet3KWinService)
 - Download/extract or clone the source code
 - Make a new folder for your build files, and open a command line there. ```mkdir ./build;cd ./build```
